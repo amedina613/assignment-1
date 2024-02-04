@@ -1,0 +1,62 @@
+---
+title: "Assignment-1"
+author: "Adriana Medina"
+date: "2024-02-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction: I chose to use the data behind this story: [Both Republicans And Democrats Have an Age Problem](https://fivethirtyeight.com/features/both-republicans-and-democrats-have-an-age-problem/)
+
+`congress-terms.csv` has an entry for every member of congress who served at any point during a particular congress between January 1947 and February 2014.
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+```
+
+
+```{r read csv}
+library(readr)
+congress_terms <- read_csv("~/Documents/GitHub/assignment-1/congress-terms.csv")
+```
+
+#Create a new data set with members over 70. I found an article that reports "approximately two out of three Americans experience some level of cognitive impairment at an average age of approximately 70 years.": https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7153285/#:~:text=Approximately%20two%20out%20of%20three,onset%2083%20(79)%20years. 
+
+
+```{r}
+over_70 <- subset(congress_terms, age > 70)
+```
+
+#How many Democrats vs. Republicans are over 70
+```{r-bar plot of D v R over 70}
+barplot(table(over_70$party), main = "Party Distribution of Congress Members Over 70", xlab = "Party")
+```
+
+# Create a bar plot representing the proportion of Members over 70 in each chamber
+
+```{r}
+library(ggplot2)
+```
+
+```{r bar-graph-members over 70}
+ggplot(congress_terms, aes(x = chamber, fill = age > 70)) +
+  geom_bar(position = "fill", stat = "count") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(title = "Proportion of Members Over 70 in Each Chamber",
+       x = "Chamber",
+       y = "Proportion") +
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  theme_minimal()
+```
+
+#Findings and Recommendations
+I've found that within the members of congress between January 1947 and February 2014, there were more members in the senate that were over the age of 70 than in the house of representatives. 
+
+If I were to continue to do research on this subject, I would want to update the data to include members in 2024 
+
+
+
